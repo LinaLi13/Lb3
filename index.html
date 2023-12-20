@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Slideshow</title>
+  <style>
+    #slideshow {
+      width: 50%; 
+      height: 50%; 
+    }
+
+    table {
+            border-collapse: collapse;
+            width: 50%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+  </style>
+</head>
+<body>
+
+
+
+<h1>Image Slideshow</h1>
+<img id="slideshow" src="image1.jpg" alt="Image 1">
+<br>
+<button id="changeInterval">Змінити інтервал (в секундах)</button>
+<button id="stopButton">Stop Slideshow</button>
+
+<script>
+    let images = ["image1.jpg", "image2.jpg", "image3.jpg"];
+    let currentIndex = 0;
+    let slideshowInterval;
+
+    function startSlideshow(intervalInSeconds) {
+        clearInterval(slideshowInterval);
+        slideshowInterval = setInterval(changeImage, intervalInSeconds * 1000);
+    }
+
+    function changeImage() {
+        const slideshow = document.getElementById("slideshow");
+        currentIndex = (currentIndex + 1) % images.length;
+        slideshow.src = images[currentIndex];
+        slideshow.alt = `Image ${currentIndex + 1}`;
+    }
+
+    document.getElementById("changeInterval").addEventListener("click", () => {
+        const intervalInput = prompt("Змінити інтервал (в секундах):");
+        if (intervalInput !== null) {
+            startSlideshow(parseInt(intervalInput));
+        }
+    });
+
+    document.getElementById("stopButton").addEventListener("click", () => clearInterval(slideshowInterval));
+
+    startSlideshow(3); // Start the slideshow initially with a default interval
+</script>
+
+
+
+<h2>Таблиця</h2>
+<label for="min">Мінімальне значення: </label>
+<input type="number" id="min" min="0">
+<label for="max">Максимальне значення: </label>
+<input type="number" id="max" min="1">
+<button id="generate">Згенерувати таблицю</button>
+
+<table id="randomTable" style="width: 300px; height: 300px;">
+    <tbody>
+        <!-- Table body will be populated dynamically -->
+    </tbody>
+</table>
+
+<script>
+    function getRandomInteger(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateTable() {
+        const min = parseInt(document.getElementById('min').value);
+        const max = parseInt(document.getElementById('max').value);
+
+        const tableBody = document.querySelector('#randomTable tbody');
+        tableBody.innerHTML = ''; // Очистить предыдущее содержимое таблицы
+
+        for (let i = 1; i <= 10; i++) {
+            const row = document.createElement('tr');
+            for (let j = 1; j <= 10; j++) {
+                const randomNumber = getRandomInteger(min, max);
+                const cell = document.createElement('td');
+                cell.textContent = randomNumber;
+
+                // Определяем цвет фона для чередующихся ячеек
+                if ((i + j) % 2 === 0) {
+                    cell.style.backgroundColor = 'white';
+                } else {
+                    cell.style.backgroundColor = 'lightgray';
+                }
+
+                row.appendChild(cell);
+            }
+            tableBody.appendChild(row);
+        }
+    }
+    document.getElementById('generate').addEventListener('click', generateTable);
+</script>
+
+
+<script>
+  var date = new Date();
+  var currentMinutes = date.getMinutes();
+  var body = document.body;
+
+  // Условия для изменения фона в зависимости от минут
+  if (currentMinutes >= 0 && currentMinutes < 15) {
+      body.style.backgroundColor = "rgb(135, 206, 235)";
+  } else if (currentMinutes >= 15 && currentMinutes < 30) {
+      body.style.backgroundColor = "rgb(0, 139, 139)";
+  } else if (currentMinutes >= 30 && currentMinutes < 45) {
+      body.style.backgroundColor = "rgb(127, 255, 212)";
+  } else {
+      body.style.backgroundColor = "rgb(238, 232, 170)";
+  }
+</script>
+
+
+</body>
+</html>
